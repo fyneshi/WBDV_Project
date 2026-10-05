@@ -124,13 +124,6 @@ $initials = !empty($username) ? strtoupper(substr($username, 0, 2)) : 'MC';
               </svg>
               My Listings
             </a>
-            <button type="button" class="dropdown-item" onclick="openChangePasswordModal()" style="border: none; background: transparent; width: 100%; text-align: left; cursor: pointer; font-family: inherit;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-              Change Password
-            </button>
             <div class="dropdown-divider"></div>
             <a href="logout.php" class="dropdown-item logout-link">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -345,38 +338,6 @@ $initials = !empty($username) ? strtoupper(substr($username, 0, 2)) : 'MC';
     </div>
   </footer>
 
-  <!-- ==================== USER CHANGE PASSWORD MODAL ==================== -->
-  <div id="userPwdModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
-    <div style="background: #ffffff; border-radius: 16px; width: 100%; max-width: 440px; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: modalPop 0.2s ease;">
-      <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px; color: #111827;">Change Password</h3>
-      <p style="font-size: 13px; color: #6b7280; margin-bottom: 18px; line-height: 1.4;">
-        Submit a password change request. The administrator will review and approve or reject your request before it takes effect.
-      </p>
-
-      <div id="pwdAlert" style="display: none; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px;"></div>
-
-      <form id="userPwdForm" onsubmit="handleUserPasswordChange(event)">
-        <div style="margin-bottom: 14px;">
-          <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Current Password</label>
-          <input type="password" id="currentPwd" required style="width: 100%; height: 42px; border: 1px solid #d1d5db; border-radius: 8px; padding: 0 12px; font-size: 14px; outline: none;" />
-        </div>
-        <div style="margin-bottom: 14px;">
-          <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">New Password (at least 8 chars)</label>
-          <input type="password" id="newPwd" required style="width: 100%; height: 42px; border: 1px solid #d1d5db; border-radius: 8px; padding: 0 12px; font-size: 14px; outline: none;" />
-        </div>
-        <div style="margin-bottom: 20px;">
-          <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Confirm New Password</label>
-          <input type="password" id="confirmPwd" required style="width: 100%; height: 42px; border: 1px solid #d1d5db; border-radius: 8px; padding: 0 12px; font-size: 14px; outline: none;" />
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 10px;">
-          <button type="button" onclick="closeChangePasswordModal()" style="background: transparent; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; color: #475569;">Cancel</button>
-          <button type="submit" id="submitPwdBtn" style="background: #111d24; color: #ffffff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;">Submit Request</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <script>
     function toggleUserDropdown() {
       const dropdown = document.getElementById('userDropdown');
@@ -405,82 +366,6 @@ $initials = !empty($username) ? strtoupper(substr($username, 0, 2)) : 'MC';
       }
     }
 
-    // ── Change Password Modal Handlers ─────────────────────────────
-    function openChangePasswordModal() {
-      document.getElementById('userDropdown').classList.remove('show');
-      document.getElementById('userPwdModal').style.display = 'flex';
-      document.getElementById('pwdAlert').style.display = 'none';
-      document.getElementById('userPwdForm').reset();
-    }
-
-    function closeChangePasswordModal() {
-      document.getElementById('userPwdModal').style.display = 'none';
-    }
-
-    async function handleUserPasswordChange(e) {
-      e.preventDefault();
-      const current_password = document.getElementById('currentPwd').value;
-      const new_password     = document.getElementById('newPwd').value;
-      const confirm_password = document.getElementById('confirmPwd').value;
-      const alertBox         = document.getElementById('pwdAlert');
-      const submitBtn        = document.getElementById('submitPwdBtn');
-
-      if (new_password !== confirm_password) {
-        alertBox.style.display = 'block';
-        alertBox.style.background = '#fef2f2';
-        alertBox.style.color = '#991b1b';
-        alertBox.textContent = 'Passwords do not match.';
-        return;
-      }
-
-      if (new_password.length < 8) {
-        alertBox.style.display = 'block';
-        alertBox.style.background = '#fef2f2';
-        alertBox.style.color = '#991b1b';
-        alertBox.textContent = 'Password must be at least 8 characters.';
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting…';
-
-      try {
-        const res = await fetch('auth_handler.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'request_password_change',
-            current_password,
-            new_password,
-            confirm_password
-          })
-        });
-        const result = await res.json();
-
-        alertBox.style.display = 'block';
-        if (result.success) {
-          alertBox.style.background = '#ecfdf5';
-          alertBox.style.color = '#065f46';
-          alertBox.textContent = result.message;
-          document.getElementById('userPwdForm').reset();
-          setTimeout(() => {
-            closeChangePasswordModal();
-          }, 2500);
-        } else {
-          alertBox.style.background = '#fef2f2';
-          alertBox.style.color = '#991b1b';
-          alertBox.textContent = result.message;
-        }
-      } catch (err) {
-        alertBox.style.display = 'block';
-        alertBox.style.background = '#fef2f2';
-        alertBox.style.color = '#991b1b';
-        alertBox.textContent = 'Network error. Please try again.';
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit Request';
-      }
-    }
   </script>
 </body>
 </html>
