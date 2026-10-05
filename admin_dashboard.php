@@ -160,20 +160,7 @@ $adminInitials = 'AD';
         </button>
       </nav>
 
-      <!-- Sidebar Footer (Quick Links & Logout) -->
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-footer">
-        <a href="home.php" class="nav-item">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-          <span>Go to Marketplace</span>
-        </a>
-        <a href="logout.php" class="nav-item" style="color: #dc2626;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-          <span>Log out</span>
-        </a>
-      </div>
     </aside>
-
     <!-- ==================== MAIN CONTENT ==================== -->
     <main class="admin-main">
 
@@ -225,7 +212,7 @@ $adminInitials = 'AD';
               </svg>
             </div>
           </div>
-          <div class="stat-value" id="statTotalUsers">2,481</div>
+          <div class="stat-value" id="statTotalUsers">1111</div>
         </div>
 
         <!-- Card 2: Total Listings -->
@@ -239,7 +226,7 @@ $adminInitials = 'AD';
               </svg>
             </div>
           </div>
-          <div class="stat-value" id="statTotalListings">1,204</div>
+          <div class="stat-value" id="statTotalListings">0</div>
         </div>
 
         <!-- Card 3: Revenue This Month -->
@@ -253,7 +240,7 @@ $adminInitials = 'AD';
               </svg>
             </div>
           </div>
-          <div class="stat-value" id="statRevenue">₱248,900</div>
+          <div class="stat-value" id="statRevenue">₱0</div>
         </div>
 
         <!-- Card 4: Pending Approvals (Jump to Approvals) -->
@@ -267,44 +254,7 @@ $adminInitials = 'AD';
               </svg>
             </div>
           </div>
-          <div class="stat-value" id="statPendingApprovals">5</div>
-        </div>
-      </section>
-
-      <!-- ==================== PASSWORD APPROVALS & USER FEEDBACK ==================== -->
-      <section class="dashboard-section" id="approvalsSection">
-        <div class="section-header-row">
-          <div class="section-title-wrap">
-            <h2 class="section-main-title">Password Change Requests &amp; Approvals</h2>
-            <span class="pending-count-badge" id="pendingBadgeText">5 Pending</span>
-          </div>
-
-          <!-- Status Filters -->
-          <div class="approval-filter-tabs">
-            <button class="approval-tab-btn active" onclick="filterApprovals('all', this)">All</button>
-            <button class="approval-tab-btn" onclick="filterApprovals('pending', this)">Pending</button>
-            <button class="approval-tab-btn" onclick="filterApprovals('approved', this)">Approved</button>
-            <button class="approval-tab-btn" onclick="filterApprovals('rejected', this)">Rejected</button>
-          </div>
-        </div>
-
-        <div class="data-table-wrap">
-          <table class="custom-table" id="approvalsTable">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Request Date</th>
-                <th>Status</th>
-                <th>Admin Feedback / Notes</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="approvalsTableBody">
-              <tr>
-                <td colspan="5" style="text-align: center; color: #94a3b8; padding: 30px;">Loading requests…</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="stat-value" id="statPendingApprovals">0</div>
         </div>
       </section>
 
@@ -403,10 +353,10 @@ $adminInitials = 'AD';
 
         if (data.success) {
           // Update Stats
-          document.getElementById('statTotalUsers').textContent = data.stats.total_users || '2,481';
-          document.getElementById('statTotalListings').textContent = data.stats.total_listings || '1,204';
-          document.getElementById('statRevenue').textContent = data.stats.revenue_month || '₱248,900';
-          document.getElementById('statPendingApprovals').textContent = data.stats.pending_approvals;
+          document.getElementById('statTotalUsers').textContent = data.stats.total_users || '0';
+          document.getElementById('statTotalListings').textContent = data.stats.total_listings || '0';
+          document.getElementById('statRevenue').textContent = data.stats.revenue_month || '₱0';
+          document.getElementById('statPendingApprovals').textContent = data.stats.pending_approvals || '0';
           document.getElementById('pendingBadgeText').textContent = data.stats.pending_approvals + ' Pending';
 
           // Update Requests
@@ -684,3 +634,4 @@ $adminInitials = 'AD';
   </script>
 </body>
 </html>
+
