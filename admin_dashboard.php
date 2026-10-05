@@ -22,7 +22,7 @@ $adminInitials = 'AD';
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="CSS/admin.css" />
 </head>
 <body>
 
@@ -135,22 +135,6 @@ $adminInitials = 'AD';
           <span>Reports</span>
         </button>
 
-        <button class="nav-item" onclick="switchNavSection('audit', this)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-          </svg>
-          <span>Activity / Audit Logs</span>
-        </button>
-
-        <button class="nav-item" onclick="toggleNotifDropdown()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-          </svg>
-          <span>Notifications</span>
-          <span class="nav-badge" id="sidebarNotifBadge">0</span>
-        </button>
-
         <button class="nav-item" onclick="switchNavSection('settings', this)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
@@ -160,7 +144,11 @@ $adminInitials = 'AD';
         </button>
       </nav>
 
+      <!-- Sidebar Footer -->
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-footer"></div>
     </aside>
+
     <!-- ==================== MAIN CONTENT ==================== -->
     <main class="admin-main">
 
@@ -168,30 +156,10 @@ $adminInitials = 'AD';
       <header class="dashboard-header">
         <div class="header-title-group">
           <h1>Dashboard Overview</h1>
-          <p>A snapshot of activity across the marketplace.</p>
+          <p>A snapshot of key marketplace metrics.</p>
         </div>
 
         <div class="header-actions">
-          <!-- Notification Bell Button -->
-          <button class="header-icon-btn" id="notifBellBtn" onclick="toggleNotifDropdown()" title="Notifications">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-            <span class="notif-badge-dot" id="notifDot" style="display: none;"></span>
-          </button>
-
-          <!-- Notification Dropdown -->
-          <div class="notif-dropdown" id="notifDropdown">
-            <div class="notif-header">
-              <h4>Notifications (<span id="notifCountText">0</span>)</h4>
-              <button class="notif-clear-btn" onclick="markAllNotifsRead()">Mark all as read</button>
-            </div>
-            <ul class="notif-list" id="notifList">
-              <li class="notif-item">No new notifications.</li>
-            </ul>
-          </div>
-
           <!-- Admin Avatar Pill Button -->
           <button class="header-avatar-btn" title="Admin Account" onclick="window.location.href='home.php'">
             <?php echo htmlspecialchars($adminInitials); ?>
@@ -199,7 +167,7 @@ $adminInitials = 'AD';
         </div>
       </header>
 
-      <!-- 4 METRIC STAT CARDS -->
+      <!-- 3 METRIC STAT CARDS -->
       <section class="stats-grid">
         <!-- Card 1: Total Users -->
         <div class="stat-card">
@@ -212,7 +180,7 @@ $adminInitials = 'AD';
               </svg>
             </div>
           </div>
-          <div class="stat-value" id="statTotalUsers">1111</div>
+          <div class="stat-value" id="statTotalUsers">2,481</div>
         </div>
 
         <!-- Card 2: Total Listings -->
@@ -226,7 +194,7 @@ $adminInitials = 'AD';
               </svg>
             </div>
           </div>
-          <div class="stat-value" id="statTotalListings">0</div>
+          <div class="stat-value" id="statTotalListings">1,204</div>
         </div>
 
         <!-- Card 3: Revenue This Month -->
@@ -240,85 +208,12 @@ $adminInitials = 'AD';
               </svg>
             </div>
           </div>
-          <div class="stat-value" id="statRevenue">₱0</div>
+          <div class="stat-value" id="statRevenue">₱248,900</div>
         </div>
 
-        <!-- Card 4: Pending Approvals (Jump to Approvals) -->
-        <div class="stat-card highlight" onclick="scrollToApprovals()">
-          <div class="stat-card-top">
-            <span class="stat-label">Pending approvals</span>
-            <div class="stat-icon-wrapper">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
-          </div>
-          <div class="stat-value" id="statPendingApprovals">0</div>
-        </div>
-      </section>
-
-      <!-- ==================== RECENT ACTIVITY ==================== -->
-      <section class="activity-card">
-        <div class="activity-header">
-          <span>RECENT ACTIVITY</span>
-          <span>USER</span>
-          <span>WHEN</span>
-        </div>
-
-        <ul class="activity-list" id="activityList">
-          <!-- Fallback initial items matching the screenshot -->
-          <li class="activity-row">
-            <span class="activity-action">New seller application submitted</span>
-            <span class="activity-user">Jordan Davis</span>
-            <span class="activity-when">15 min ago</span>
-          </li>
-          <li class="activity-row">
-            <span class="activity-action">Listing flagged for review</span>
-            <span class="activity-user">Vintage record player</span>
-            <span class="activity-when">40 min ago</span>
-          </li>
-          <li class="activity-row">
-            <span class="activity-action">Payout processed</span>
-            <span class="activity-user">Sarah Chen, ₱8,200</span>
-            <span class="activity-when">1 hr ago</span>
-          </li>
-          <li class="activity-row">
-            <span class="activity-action">New user registered</span>
-            <span class="activity-user">marius@email.com</span>
-            <span class="activity-when">2 hr ago</span>
-          </li>
-          <li class="activity-row">
-            <span class="activity-action">Transaction disputed</span>
-            <span class="activity-user">Order #10432</span>
-            <span class="activity-when">3 hr ago</span>
-          </li>
-        </ul>
       </section>
 
     </main>
-  </div>
-
-  <!-- ==================== APPROVE / REJECT WITH FEEDBACK MODAL ==================== -->
-  <div class="modal-overlay" id="decisionModal">
-    <div class="modal-box">
-      <h3 class="modal-title" id="modalDecisionTitle">Review Password Request</h3>
-      <p class="modal-desc" id="modalDecisionDesc">
-        Provide feedback for <strong id="modalTargetUser">User</strong> before confirming.
-      </p>
-
-      <label style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; display: block;">
-        Feedback / Reason for User:
-      </label>
-      <textarea id="modalFeedbackText" class="modal-textarea" placeholder="E.g. Approved: Password meets security requirements."></textarea>
-
-      <div class="modal-footer">
-        <button type="button" class="btn-secondary" onclick="closeDecisionModal()">Cancel</button>
-        <button type="button" id="modalConfirmBtn" class="btn-approve" onclick="submitDecisionModal()">
-          Confirm Decision
-        </button>
-      </div>
-    </div>
   </div>
 
   <!-- Toast Element -->
@@ -326,10 +221,6 @@ $adminInitials = 'AD';
 
   <!-- ==================== JAVASCRIPT ==================== -->
   <script>
-    let allRequests = [];
-    let currentFilter = 'all';
-    let activeDecision = { requestId: null, decision: null, username: '' };
-
     // ── Toast notification ─────────────────────────────────────────
     function showToast(message, type = 'success') {
       const toast = document.getElementById('adminToast');
@@ -352,253 +243,15 @@ $adminInitials = 'AD';
         const data = await res.json();
 
         if (data.success) {
-          // Update Stats
-          document.getElementById('statTotalUsers').textContent = data.stats.total_users || '0';
-          document.getElementById('statTotalListings').textContent = data.stats.total_listings || '0';
-          document.getElementById('statRevenue').textContent = data.stats.revenue_month || '₱0';
-          document.getElementById('statPendingApprovals').textContent = data.stats.pending_approvals || '0';
-          document.getElementById('pendingBadgeText').textContent = data.stats.pending_approvals + ' Pending';
+          document.getElementById('statTotalUsers').textContent = data.stats.total_users || '2,481';
+          document.getElementById('statTotalListings').textContent = data.stats.total_listings || '1,204';
+          document.getElementById('statRevenue').textContent = data.stats.revenue_month || '₱248,900';
 
-          // Update Requests
-          allRequests = data.requests || [];
-          renderApprovalsTable();
-
-          // Update Activities
-          if (data.activities && data.activities.length > 0) {
-            renderActivities(data.activities);
-          }
-
-          // Update Notifications
-          renderNotifications(data.notifications || [], data.unread_count || 0);
         }
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
       }
     }
-
-    // ── Render Approvals Table ─────────────────────────────────────
-    function renderApprovalsTable() {
-      const tbody = document.getElementById('approvalsTableBody');
-      const filtered = allRequests.filter(r => {
-        if (currentFilter === 'all') return true;
-        return r.status === currentFilter;
-      });
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 28px;">No ${currentFilter === 'all' ? '' : currentFilter} requests found.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(req => {
-        const isPending = req.status === 'pending';
-        const isApproved = req.status === 'approved';
-        const isRejected = req.status === 'rejected';
-
-        let badgeClass = 'status-pending';
-        if (isApproved) badgeClass = 'status-approved';
-        if (isRejected) badgeClass = 'status-rejected';
-
-        const feedbackDisplay = req.admin_feedback 
-          ? `<div class="feedback-note-text">${escapeHtml(req.admin_feedback)}</div>`
-          : `<span style="color: #94a3b8; font-size: 12px; font-style: italic;">No feedback recorded yet</span>`;
-
-        let actionHtml = '';
-        if (isPending) {
-          actionHtml = `
-            <div class="table-actions">
-              <button class="btn-approve" onclick="openDecisionModal(${req.id}, 'approve', '${escapeHtml(req.username)}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Approve
-              </button>
-              <button class="btn-reject" onclick="openDecisionModal(${req.id}, 'reject', '${escapeHtml(req.username)}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                Reject
-              </button>
-            </div>
-          `;
-        } else {
-          actionHtml = `
-            <div class="table-actions">
-              <button class="btn-feedback" onclick="openDecisionModal(${req.id}, '${req.status}', '${escapeHtml(req.username)}', '${escapeHtml(req.admin_feedback || '')}')">
-                Edit Feedback
-              </button>
-            </div>
-          `;
-        }
-
-        return `
-          <tr id="req-row-${req.id}">
-            <td>
-              <div class="table-user-cell">
-                <div class="user-cell-avatar">${req.avatar_initials}</div>
-                <div>
-                  <span class="user-cell-name">${escapeHtml(req.username)}</span>
-                  <span class="user-cell-email">${escapeHtml(req.email)}</span>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div style="font-weight: 500; color: #1e293b;">${req.time_ago}</div>
-              <div style="font-size: 11px; color: #94a3b8;">${req.created_at}</div>
-            </td>
-            <td>
-              <span class="status-pill ${badgeClass}">
-                ${req.status.toUpperCase()}
-              </span>
-            </td>
-            <td>${feedbackDisplay}</td>
-            <td>${actionHtml}</td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    // ── Filter tabs ────────────────────────────────────────────────
-    function filterApprovals(filter, btn) {
-      currentFilter = filter;
-      document.querySelectorAll('.approval-tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderApprovalsTable();
-    }
-
-    // ── Render Recent Activities ───────────────────────────────────
-    function renderActivities(acts) {
-      const list = document.getElementById('activityList');
-      list.innerHTML = acts.map(a => `
-        <li class="activity-row">
-          <span class="activity-action">${escapeHtml(a.activity)}</span>
-          <span class="activity-user">${escapeHtml(a.user_identifier)}</span>
-          <span class="activity-when">${a.time_ago}</span>
-        </li>
-      `).join('');
-    }
-
-    // ── Render Notifications ───────────────────────────────────────
-    function renderNotifications(notifs, unreadCount) {
-      const dot = document.getElementById('notifDot');
-      const badge = document.getElementById('sidebarNotifBadge');
-      const countText = document.getElementById('notifCountText');
-      const list = document.getElementById('notifList');
-
-      if (unreadCount > 0) {
-        dot.style.display = 'block';
-        badge.textContent = unreadCount;
-        badge.style.display = 'inline-block';
-        countText.textContent = unreadCount;
-      } else {
-        dot.style.display = 'none';
-        badge.style.display = 'none';
-        countText.textContent = '0';
-      }
-
-      if (notifs.length === 0) {
-        list.innerHTML = `<li class="notif-item">No new notifications.</li>`;
-        return;
-      }
-
-      list.innerHTML = notifs.map(n => `
-        <li class="notif-item ${n.is_read == 0 ? 'unread' : ''}">
-          <div class="notif-item-title">${escapeHtml(n.title)}</div>
-          <div class="notif-item-msg">${escapeHtml(n.message)}</div>
-          <div class="notif-item-time">${n.time_ago}</div>
-        </li>
-      `).join('');
-    }
-
-    // ── Decision Modal (Approve or Reject with custom feedback) ────
-    function openDecisionModal(requestId, decision, username, currentFeedback = '') {
-      activeDecision = { requestId, decision, username };
-
-      const titleEl = document.getElementById('modalDecisionTitle');
-      const descEl = document.getElementById('modalDecisionDesc');
-      const textEl = document.getElementById('modalFeedbackText');
-      const confirmBtn = document.getElementById('modalConfirmBtn');
-      const targetUser = document.getElementById('modalTargetUser');
-
-      targetUser.textContent = username;
-
-      if (decision === 'approve') {
-        titleEl.textContent = 'Approve Password Change';
-        descEl.innerHTML = `Are you sure you want to approve the password change for <strong>${escapeHtml(username)}</strong>? This will activate their new password.`;
-        textEl.value = currentFeedback || 'Password change approved by administrator. Meets security requirements.';
-        confirmBtn.className = 'btn-approve';
-        confirmBtn.textContent = 'Confirm Approval';
-      } else {
-        titleEl.textContent = 'Reject Password Change';
-        descEl.innerHTML = `Are you sure you want to reject the password change for <strong>${escapeHtml(username)}</strong>? The user will be notified with your feedback.`;
-        textEl.value = currentFeedback || 'Password change rejected: Does not meet required campus password policy.';
-        confirmBtn.className = 'btn-reject';
-        confirmBtn.textContent = 'Confirm Rejection';
-      }
-
-      document.getElementById('decisionModal').classList.add('active');
-    }
-
-    function closeDecisionModal() {
-      document.getElementById('decisionModal').classList.remove('active');
-    }
-
-    async function submitDecisionModal() {
-      const feedback = document.getElementById('modalFeedbackText').value.trim();
-      const confirmBtn = document.getElementById('modalConfirmBtn');
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = 'Processing…';
-
-      try {
-        const res = await fetch('auth_handler.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'admin_handle_password_request',
-            request_id: activeDecision.requestId,
-            decision: activeDecision.decision,
-            feedback: feedback
-          })
-        });
-        const result = await res.json();
-
-        if (result.success) {
-          showToast(result.message, activeDecision.decision === 'approve' ? 'success' : 'error');
-          closeDecisionModal();
-          // Reload fresh dashboard data
-          await loadDashboardData();
-        } else {
-          showToast(result.message, 'error');
-        }
-      } catch (err) {
-        showToast('Network error while processing request.', 'error');
-      } finally {
-        confirmBtn.disabled = false;
-      }
-    }
-
-    // ── Notifications Toggle & Mark as Read ────────────────────────
-    function toggleNotifDropdown() {
-      const dd = document.getElementById('notifDropdown');
-      dd.classList.toggle('show');
-    }
-
-    async function markAllNotifsRead() {
-      await fetch('auth_handler.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'admin_mark_notifications_read' })
-      });
-      document.getElementById('notifDot').style.display = 'none';
-      document.getElementById('sidebarNotifBadge').style.display = 'none';
-      document.getElementById('notifCountText').textContent = '0';
-      document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
-      showToast('Notifications marked as read.');
-    }
-
-    // Close notification dropdown when clicked outside
-    document.addEventListener('click', function(e) {
-      const btn = document.getElementById('notifBellBtn');
-      const dd = document.getElementById('notifDropdown');
-      if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) {
-        dd.classList.remove('show');
-      }
-    });
 
     // ── Sidebar Navigation switching ──────────────────────────────
     function switchNavSection(secName, btn) {
@@ -607,25 +260,9 @@ $adminInitials = 'AD';
 
       if (secName === 'overview') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (secName === 'audit' || secName === 'users') {
-        scrollToApprovals();
-      } else {
+      } else if (btn) {
         showToast('Viewing ' + btn.querySelector('span').textContent, 'success');
       }
-    }
-
-    function scrollToApprovals() {
-      document.getElementById('approvalsSection').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
     }
 
     // Initial load + periodic poll every 20 seconds
@@ -634,4 +271,3 @@ $adminInitials = 'AD';
   </script>
 </body>
 </html>
-
