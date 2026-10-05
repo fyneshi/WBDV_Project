@@ -72,4 +72,10 @@ if ($adminRes->num_rows === 0) {
 }
 $checkAdmin->close();
 
-
+// Remove tables for dashboard features that are no longer used.
+if (!$conn->query("DROP TABLE IF EXISTS `activity_logs`, `admin_notifications`")) {
+    die(json_encode([
+        'success' => false,
+        'message' => 'Unused dashboard tables could not be removed: ' . $conn->error
+    ]));
+}
